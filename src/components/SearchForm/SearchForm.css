@@ -1,0 +1,130 @@
+.search-form {
+  margin: 0 auto;
+  max-width: 1140px;
+  padding: 70px 70px 10px;
+}
+
+.search-form__container {
+  padding-bottom: 69px;
+  border-bottom: 1px solid  #424242;;
+}
+
+.search-form__box {
+  background-color: #2F2F2F;
+  border-radius: 9px;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+}
+.search-form__img-search {
+  background-image: url(../../images/search.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+  margin-left: 18px;
+}
+
+.search-form__input {
+  margin: 0;
+  padding: 0;
+  background-color: #2F2F2F;
+  border: none;
+  margin-left: 10px;
+  width: 66%;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 20px;
+  color: #fff;
+}
+
+.search-form__input:focus {
+  outline-style: none;
+}
+.search-form__input::placeholder{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 20px;
+  color: #8B8B8B;
+}
+
+.search-form__button{
+  margin: 0;
+  padding: 0;
+  width: 80px;
+  height: 34px;
+  border: none;
+  background-color: #4285F4;
+  border-radius: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.search-form__button-search {
+  background-image: url(../../images/search_white.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+}
+
+.search-form__line {
+  height: 40px;
+  width: 1px;
+  background: #424242;
+  margin: 0 30px;
+}
+
+.search-form__checkbox-container {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;
+  position: relative;
+  padding: 0 30px 0 50px ;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.search-form__checkbox {
+  display: none;
+  width: 36px;
+  height: 20px;
+  border-radius: 20px;
+}
+
+.search-form__span {
+  width: 36px;
+  height: 20px;
+  background: #EBEBEB;
+  border-radius: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: .2s linear;
+}
+.search-form__span::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #F5F5F5;
+  border-radius: 50%;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  transition: .2s linear;
+}
+.search-form__checkbox:checked + .search-form__span {
+  background: #2BE080;
+}
+
+.search-form__checkbox:checked + .search-form__span::after {
+  background: #FFFFFF;
+  left: 22px;
+}
