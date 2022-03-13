@@ -16,7 +16,7 @@ function Techs() {
           </p>
           <div className="techs__list">
             { techsArray.map((item) => {
-              return <div className="techs__item">{item}</div>
+              return <div className="techs__item" key={item} >{item}</div>
             }) }
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import './Navigation.css'
 
 function Navigation(props) {
@@ -9,18 +10,18 @@ function Navigation(props) {
     <div className="navigation">
       { props.isMainScreen ?
         <nav className="navigation__container">
-          <a href="#" className="navigation__link">Регистрация</a>
+          <Link to="/signup" className="navigation__link">Регистрация</Link>
           <button className="navigation__button">
-            <a href="#" className="navigation__button-link navigation__button-link_theme_green">Войти</a>
+            <Link to="/signin" className="navigation__button-link navigation__button-link_theme_green">Войти</Link>
           </button>
         </nav> :
          <nav className="navigation__container">
-          <a href="#" className={moviesClass} >Фильмы</a>
-          <a href="#" className={sevedMoviesClass}>Сохранённые фильмы</a>
-          <button className="navigation__button">
-            <a href="#" className="navigation__button-link navigation__button-link_theme_gray">Аккаунт</a>
-          </button>
-        </nav>
+         <Link to="/movies" className={moviesClass} >Фильмы</Link>
+         <Link to="/saved-movies" className={sevedMoviesClass}>Сохранённые фильмы</Link>
+         <button className="navigation__button">
+           <Link to="/profile" className="navigation__button-link navigation__button-link_theme_gray">Аккаунт</Link>
+         </button>
+       </nav>
       }
     </div>
 
