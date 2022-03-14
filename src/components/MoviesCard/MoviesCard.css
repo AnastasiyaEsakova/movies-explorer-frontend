@@ -1,17 +1,21 @@
 .movies-card__container {
-  width: 364px;
-  height: 281px;
+  max-width: 364px;
+  max-height: 281px;
   background: #222222;
   overflow: hidden;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
   border-radius: 6px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.movies-card__container:hover .movies-card__like_type_own {
+  opacity: 1;
 }
 
 .movies-card__image {
-  background-image: url(../../images/movies/33_word.png);
-  background-repeat: no-repeat;
   width: 100%;
-  height: 203px;
+  max-height: 203px;
 }
 
 .movies-card__info {
@@ -53,6 +57,12 @@
   background-image: url(../../images/active-like.svg)
 }
 
+.movies-card__like_type_own {
+  background-image: url(../../images/delete_icon.svg);
+  opacity: 0;
+  transition: opacity .3s linear;
+}
+
 .movies-card__time {
   font-style: normal;
   font-weight: normal;
@@ -61,4 +71,42 @@
   color: #8B8B8B;
   margin: 0;
   padding: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .movies-card__container {
+    max-width: 339px;
+    max-height: 262px;
+  }
+  .movies-card__image {
+    max-height: 190px;
+  }
+  .movies-card__info {
+    padding: 14px;
+  }
+  .movies-card__title {
+    margin-bottom: 15px;
+  }
+  .movies-card__time {
+    font-weight: 400;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .movies-card__container {
+    max-width: 330px;
+    max-height: 237px;
+  }
+  .movies-card__image {
+    max-height: 168px;
+  }
+  .movies-card__title {
+    margin-bottom: 14px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .movies-card__time {
+    font-size: 10px;
+    line-height: 12px;
+  }
 }

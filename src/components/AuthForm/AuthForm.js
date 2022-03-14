@@ -36,7 +36,7 @@ function AuthForm(props) {
         <label className={`auth__title ${props.title.length === 3 ? '' : 'auth__title_disable'}`} htmlFor="name">{props.title[2]}</label>
         <input
           id="name"
-          className={`auth__input ${props.title.length === 3 ? '' : 'auth__input_disable'}`}
+          className={`auth__input ${props.title.length === 3 ? '' : 'auth__input_disable'} ${ errors.name ? 'auth__input_type_error' : ''}`}
           name="name"
           type="text"
           onChange={handleChangeName}
@@ -54,7 +54,7 @@ function AuthForm(props) {
         <label className="auth__title" htmlFor="email">{props.title[0]}</label>
         <input
           id="email"
-          className="auth__input"
+          className={`auth__input ${ errors.email ? 'auth__input_type_error' : ''}`}
           name="email"
           type="email"
           onChange={handleChangeEmail}
@@ -72,7 +72,7 @@ function AuthForm(props) {
         <label className="auth__title" htmlFor="password">{props.title[1]}</label>
         <input
           id="password"
-          className="auth__input"
+          className={`auth__input ${ errors.password ? 'auth__input_type_error' : ''}`}
           name="password"
           type="password"
           onChange={handleChangePassword}
@@ -87,8 +87,10 @@ function AuthForm(props) {
       >
         {errors.password}
       </span>
-        <button className="auth__button">{props.buttonText}</button>
-        {props.children}
+        <div className="auth__button-container">
+          <button className="auth__button">{props.buttonText}</button>
+          {props.children}
+        </div>
       </form>
     </div>
   );

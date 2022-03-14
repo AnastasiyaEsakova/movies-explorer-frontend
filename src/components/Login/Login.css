@@ -22,3 +22,23 @@
   line-height: 29px;
   margin-bottom: 40px;
 }
+
+@media screen and (max-width: 768px) {
+  .login__container {
+    padding-top: 232px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .login__container {
+    padding-top: 56px;
+  }
+  .login__link {
+    margin: 0 auto;
+  }
+  .login__title {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 80px;
+  }
+}

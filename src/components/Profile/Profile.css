@@ -60,7 +60,7 @@
   position: fixed;
   bottom: 70px;
 }
-.profile__button-container_ttype_edit {
+.profile__button-container_type_edit {
   bottom: 50px;
 }
 
@@ -100,4 +100,40 @@
   font-size: 14px;
   line-height: 17px;
   height: 45px;
+}
+
+@media screen and (max-width: 768px) {
+  .profile__title {
+    margin-top: 236px;
+    margin-bottom: 96px;
+  }
+  .profile__button-container {
+    position: static;
+    margin-top: 210px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .profile__container {
+    max-width: 260px;
+  }
+  .profile__title {
+    margin-top: 70px;
+    margin-bottom: 80px;
+  }
+  .profile__input {
+    width: 75%;
+  }
+  .profile__button-container {
+    min-width: 260px;
+    position: fixed;
+    bottom: 40px;
+  }
+  .profile__button-container_type_edit {
+    bottom: 30px;
+  }
+  .profile__button {
+    font-size: 12px;
+    line-height: 15px;
+  }
 }

@@ -18,6 +18,11 @@ function SearchForm() {
           Короткометражки
         </label>
       </form>
+      <label className="search-form__checkbox-container search-form__checkbox-container_type_mobile">
+          <input className="search-form__checkbox" type="checkbox"/>
+          <span className="search-form__span"></span>
+          Короткометражки
+        </label>
       </div>
     </div>
 

@@ -38,6 +38,9 @@
   outline: none;
 }
 
+.auth__input_type_error {
+  color: #EE3465;
+}
 
 .auth__error {
   font-style: normal;
@@ -83,6 +86,13 @@
   color: #C2C2C2;
 }
 
+.auth__button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .auth__button-info {
   display: flex;
   justify-content: center;
@@ -108,4 +118,52 @@
   line-height: 17px;
   color: #4285F4;
   text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .auth__input {
+    font-weight: 400;
+    padding-bottom: 8px;
+  }
+  .auth__error:last-of-type {
+    margin-bottom: 134px;
+  }
+  .auth__button-info {
+    padding-bottom: 232px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .auth__form {
+    max-width: 260px;
+  }
+  .auth__input {
+    padding-bottom: 10px;
+  }
+  .auth__error:last-of-type {
+    margin-bottom: 134px;
+  }
+  .auth__button {
+    width: 260px;
+    position: fixed;
+    bottom: 59px;
+    font-size: 12px;
+    line-height: 15px;
+    margin-bottom: 14px;
+  }
+  .auth__button-info {
+    position: fixed;
+    bottom: 30px;
+    max-width: 260px;
+    padding-bottom: 0;
+    white-space: nowrap;
+  }
+  .auth__text {
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .auth__link {
+    font-size: 12px;
+    line-height: 15px;
+  }
 }

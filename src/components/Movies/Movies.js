@@ -5,6 +5,7 @@ import Navigation from "../Navigation/Navigation";
 import SearchForm from "../SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import { config } from '../../utils/constants'
 
 function Movies() {
   const isLoading = false
@@ -13,11 +14,11 @@ function Movies() {
   return (
     <div className="movies">
      <Header>
-       <Navigation movies />
+       <Navigation type="movies" />
      </Header>
      <SearchForm />
      {loader}
-     <MoviesCardList />
+     <MoviesCardList list={config} />
     </div>
 
   );
