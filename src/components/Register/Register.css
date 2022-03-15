@@ -28,7 +28,7 @@
   }
 }
 
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 430px) {
   .register__container {
     padding-top: 56px;
   }

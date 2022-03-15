@@ -30,7 +30,7 @@
   transition: opacity .3s linear;
 }
 .nav-tab__link:hover {
-  opacity: .6;
+  opacity: .7;
 }
 
 @media screen and (max-width: 320px){

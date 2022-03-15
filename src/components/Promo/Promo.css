@@ -41,7 +41,7 @@
   }
 }
 
-@media screen and (max-width: 320px){
+@media screen and (max-width: 450px){
   .promo__title {
     font-size: 31px;
     line-height: 39px;

@@ -1,5 +1,4 @@
 import React from "react";
-import './Main.css';
 import Header from "../Header/Header";
 import Navigation from "../Navigation/Navigation";
 import Promo from "../Promo/Promo";
@@ -14,7 +13,7 @@ function Main() {
 
        <Promo>
           <Header>
-            <Navigation isMainScreen/>
+            <Navigation isAuthorised={false} />
           </Header>
        </Promo>
        <NavTab />

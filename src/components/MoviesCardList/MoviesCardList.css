@@ -32,9 +32,15 @@
   margin: 0 auto;
   margin-bottom: 80px;
   cursor: pointer;
+  opacity: 1;
+  transition: opacity .3s linear;
 }
 
-@media screen and (max-width: 768px) {
+.movie-card-list__button:hover {
+  opacity: .7;
+}
+
+@media screen and (max-width: 890px) {
   .movie-card-list__container {
     padding: 70px 30px 80px;
     grid-template-columns: repeat(2, minmax(220px, 1fr));
@@ -42,7 +48,7 @@
   }
 }
 
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 500px) {
   .movie-card-list__container {
     padding: 40px 10px 76px;
     grid-template-columns: repeat(1, minmax(220px, 1fr));

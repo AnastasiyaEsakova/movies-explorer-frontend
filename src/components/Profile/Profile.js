@@ -35,7 +35,7 @@ function Profile() {
        <Navigation />
      </Header>
       <div className="profile__container">
-        <h2 className="profile__title">Привет, {name}</h2>
+        <h2 className="profile__title">Привет, Виталий</h2>
         <label className="profile__label">
           Имя
           <input

@@ -19,7 +19,7 @@
 }
 
 .movies-card__info {
-  height: 78px;
+  max-height: 78px;
   padding: 16px;
 }
 
@@ -51,6 +51,12 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  opacity: 1;
+  transition: opacity .3s linear;
+}
+
+.movies-card__like:hover {
+  opacity: 0.7;
 }
 
 .movies-card__like_active {
@@ -92,7 +98,7 @@
   }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
   .movies-card__container {
     max-width: 330px;
     max-height: 237px;

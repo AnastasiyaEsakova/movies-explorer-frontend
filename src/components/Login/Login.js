@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import './Login.css'
 import AuthForm from "../AuthForm/AuthForm";
+import './Login.css'
 
 function Login() {
   return (

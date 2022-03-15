@@ -30,7 +30,6 @@ function AuthForm(props) {
     <div className="auth">
       <form
         className="auth__form"
-        // onSubmit={props.handleSubmit}
         name={props.name}
       >
         <label className={`auth__title ${props.title.length === 3 ? '' : 'auth__title_disable'}`} htmlFor="name">{props.title[2]}</label>

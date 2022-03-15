@@ -1,8 +1,9 @@
 import React from "react";
-import './MoviesCardList.css'
 import MoviesCard from "../MoviesCard/MoviesCard ";
+import './MoviesCardList.css'
 
 function MoviesCardList(props) {
+
   return (
     <section className="movie-card-list">
       <div className="movie-card-list__container">

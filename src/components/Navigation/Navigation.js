@@ -18,16 +18,16 @@ function Navigation(props) {
 
   return (
     <div className="navigation">
-      { props.isMainScreen ?
+      { props.isAuthorised || props.isMovieScreen ?
+      <nav className="navigation__container">
+      <BurgerMenu handleOpenMenu={handleOpenMenu} isOpenMenu={isOpenMenu} type={props.type} />
+        <Link to="/movies" className={moviesClass} >Фильмы</Link>
+        <Link to="/saved-movies" className={sevedMoviesClass}>Сохранённые фильмы</Link>
+        <Link to="/profile" className="navigation__button-link navigation__button-link_theme_gray">Аккаунт</Link>
+    </nav> :
         <nav className="navigation__container">
           <Link to="/signup" className="navigation__link">Регистрация</Link>
-            <Link to="/signin" className="navigation__button-link navigation__button-link_theme_green">Войти</Link>
-        </nav> :
-        <nav className="navigation__container">
-          <BurgerMenu handleOpenMenu={handleOpenMenu} isOpenMenu={isOpenMenu} type={props.type} />
-            <Link to="/movies" className={moviesClass} >Фильмы</Link>
-            <Link to="/saved-movies" className={sevedMoviesClass}>Сохранённые фильмы</Link>
-            <Link to="/profile" className="navigation__button-link navigation__button-link_theme_gray">Аккаунт</Link>
+          <Link to="/signin" className="navigation__button-link navigation__button-link_theme_green">Войти</Link>
         </nav>
       }
     </div>
