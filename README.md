@@ -1,4 +1,5 @@
 # movies-explorer-frontend
 -------
-https://movies.esakova.nomoredomains.work/
-84.201.167.18
+Сайт: https://movies.esakova.nomoredomains.work/
+-----
+Макет: https://www.figma.com/file/atKLMogncA8AMhXYR68jft/Diplom?node-id=891%3A3857
