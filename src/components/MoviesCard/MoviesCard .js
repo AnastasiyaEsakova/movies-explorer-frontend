@@ -10,7 +10,7 @@ function MoviesCard(props) {
   return (
     <div className="movies-card">
      <div className="movies-card__container">
-        <img className="movies-card__image" src={props.movie.image} />
+        <img className="movies-card__image" src={props.movie.image} alt={props.movie.nameRU} />
         <div className="movies-card__info">
           <div className="movies-card__description">
             <p className="movies-card__title">{props.movie.nameRU}</p>
