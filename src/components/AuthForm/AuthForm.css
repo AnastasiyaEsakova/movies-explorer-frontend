@@ -12,10 +12,6 @@
   margin-bottom: 5px;
 }
 
-.auth__title_disable {
-  display: none;
-}
-
 .auth__input {
   font-style: normal;
   font-weight: 500;
@@ -28,10 +24,6 @@
   border: none;
   padding-bottom: 10px;
   border-bottom: 1px solid  #424242;
-}
-
-.auth__input_disable {
-  display: none;
 }
 
 .auth__input:focus {

@@ -18,7 +18,7 @@ function Navigation(props) {
 
   return (
     <div className="navigation">
-      { props.isAuthorised || props.isMovieScreen ?
+      { props.loggedIn ?
       <nav className="navigation__container">
       <BurgerMenu handleOpenMenu={handleOpenMenu} isOpenMenu={isOpenMenu} type={props.type} />
         <Link to="/movies" className={moviesClass} >Фильмы</Link>

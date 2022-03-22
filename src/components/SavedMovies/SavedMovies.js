@@ -4,20 +4,18 @@ import Navigation from "../Navigation/Navigation";
 import SearchForm from "../SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import { config } from '../../utils/constants'
 import './SavedMovies.css';
 
-function SavedMovies() {
+function SavedMovies(props) {
   const isLoading = false
 
-  const savedMoviesList = config.filter(item => item.owner === 0)
   return (
     <div className="movies">
      <Header>
-       <Navigation type="savedMovies" isMovieScreen/>
+       <Navigation type="savedMovies" loggedIn={props.loggedIn}/>
      </Header>
      <SearchForm />
-     {isLoading ? <Preloader /> : <MoviesCardList type="savedMovies" list={savedMoviesList} /> }
+     {isLoading ? <Preloader /> : <MoviesCardList type="savedMovies" list={props.movies} /> }
     </div>
 
   );

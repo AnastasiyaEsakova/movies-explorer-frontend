@@ -7,13 +7,13 @@ import AboutProject from "../AboutProject/AboutProject";
 import Techs from "../Techs/Techs";
 import AboutMe from "../AboutMe/AboutMe";
 
-function Main() {
+function Main(props) {
   return (
     <main className="main">
 
        <Promo>
           <Header>
-            <Navigation isAuthorised={false} />
+            <Navigation loggedIn={props.loggedIn} />
           </Header>
        </Promo>
        <NavTab />

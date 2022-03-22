@@ -4,18 +4,17 @@ import Navigation from "../Navigation/Navigation";
 import SearchForm from "../SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import { config } from '../../utils/constants'
 
-function Movies() {
-  const isLoading = false
-
+function Movies(props) {
   return (
     <div className="movies">
      <Header>
-       <Navigation type="movies" isMovieScreen/>
+       <Navigation type="movies" loggedIn={props.loggedIn}/>
      </Header>
-     <SearchForm />
-     {isLoading ? <Preloader /> :  <MoviesCardList list={config} type="movies"/> }
+     <SearchForm handleSearchMovies={props.handleSearchMovies}/>
+     {props.isLoading ? <Preloader /> : props.list?.length !==0 ? <MoviesCardList list={props.movies} type="movies" handleMoviesLike={props.handleMoviesLike}/> :
+     <p>Ничего не найдено</p> }
+     <p>{props.error}</p>
     </div>
 
   );
