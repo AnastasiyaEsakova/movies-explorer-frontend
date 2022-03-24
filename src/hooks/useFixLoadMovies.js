@@ -43,6 +43,7 @@ export function useFixLoadMovies() {
         if (regex.test(movie.nameRU)) arr.push(movie)
       }
     })
+    localStorage.setItem(`resultSearch-${type}`, JSON.stringify(arr))
     return arr
   };
 

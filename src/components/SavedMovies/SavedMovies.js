@@ -14,7 +14,10 @@ function SavedMovies(props) {
         <Navigation type="savedMovies" loggedIn={props.loggedIn}/>
       </Header>
       <SearchForm type="savedMovies" handleSearchMovies={props.handleSearchMovies}/>
-      {props.error ? <p className="saved-movies__text">{props.error}</p> : null}
+      {props.error ?
+        <p className="saved-movies__text">{props.error}</p> :
+        props.movies.length === 0 ?  <p className="saved-movies__text">Ничего не найдено</p> : null
+      }
       {props.isLoading ? <Preloader /> : <MoviesCardList type="savedMovies" list={props.movies}  handleMoviesLike={props.handleMoviesLike} /> }
     </div>
 

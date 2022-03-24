@@ -7,6 +7,11 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import './Movies.css'
 
 function Movies(props) {
+  const [isShow, setIsShow] = React.useState(false)
+
+  React.useEffect(() => {
+    if (localStorage.getItem("resultSearch-movies")) setIsShow(true)
+  }, [props.movies])
 
   return (
     <div className="movies">
@@ -14,7 +19,10 @@ function Movies(props) {
        <Navigation type="movies" loggedIn={props.loggedIn}/>
      </Header>
      <SearchForm type="movies" handleSearchMovies={props.handleSearchMovies}/>
-    {props.error ? <p className="movies__text">{props.error}</p> : null}
+    {props.error ?
+    <p className="saved-movies__text">{props.error}</p> :
+    props.movies.length === 0 && isShow?  <p className="saved-movies__text">Ничего не найдено</p> : null
+    }
     {props.isLoading ? <Preloader /> : <MoviesCardList list={props.movies} type="movies" handleMoviesLike={props.handleMoviesLike}/> }
     </div>
 

@@ -22,6 +22,7 @@ import './App.css'
 function App() {
   const history = useHistory();
   const { filterMovies, findSaveMovie } = useFixLoadMovies();
+  const ls = window.localStorage
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [movies, setMovies] = React.useState([]);
@@ -30,7 +31,6 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [error, setError] = React.useState('')
 
-  const ls = window.localStorage
 
 //изменение профиля
 function handleUpdateUser(userInfo) {
@@ -54,7 +54,6 @@ function filterMoviesList (nameList) {
     findSaveMovie(list, savedMovies, currentUser.data._id);
     if (nameList === 'movies') setMovies(list);
     else setSavedMovies(list);
-    if (list.length === 0) setError('Ничего не найдено')
   } catch (err) {
     setError(err.messsage)
   }
@@ -106,7 +105,11 @@ const handleMoviesLike = (movie) => {
         );
       })
       .catch((err) => {
-        console.log(err);
+        setError(err)
+        const timerId = setTimeout(() => {
+          setError(null)
+          clearTimeout(timerId);
+        }, 3000);
       });
   } else {
     mainApi.saveMovie(movie)
@@ -118,7 +121,11 @@ const handleMoviesLike = (movie) => {
         setSavedMovies(arr)
       })
       .catch((err) => {
-        console.log(err);
+        setError(err)
+        const timerId = setTimeout(() => {
+          setError(null)
+          clearTimeout(timerId);
+        }, 3000);
       });
   }
 }
@@ -166,23 +173,35 @@ const handleMoviesLike = (movie) => {
         localStorage.clear();
       })
       .catch((err) => {
-        console.log(err);
+        setError(err)
+        const timerId = setTimeout(() => {
+          setError(null)
+          clearTimeout(timerId);
+        }, 3000);
       })
   }
 
+
 // получение данных при первом открытии страницы
 function getContent () {
+  setMovies([])
   if (localStorage.getItem("token")) {
     setLoggedIn(true);
     history.push("/movies");
     Promise.all([mainApi.getSavedMovies(), mainApi.getProfileInfo()])
     .then((res) => {
-      setSavedMovies(res[0]);
       setCurrentUser(res[1]);
       ls.setItem("savedMovies", JSON.stringify(res[0]))
+      setSavedMovies(res[0]);
+      if (ls.getItem("resultSearch-savedMovies")) setSavedMovies(JSON.parse(ls.getItem("resultSearch-savedMovies")));
+      if (ls.getItem("resultSearch-movies"))  setMovies( JSON.parse(ls.getItem("resultSearch-movies")))
     })
     .catch((err) => {
-      console.log(err);
+      setError(err)
+        const timerId = setTimeout(() => {
+          setError(null)
+          clearTimeout(timerId);
+        }, 3000);
     });
   }
 }

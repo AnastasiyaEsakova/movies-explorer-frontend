@@ -44,7 +44,7 @@ function Profile(props) {
        <Navigation loggedIn={props.loggedIn}/>
      </Header>
       <form className="profile__container" onSubmit={handleSubmit}>
-        <h2 className="profile__title">Привет, {currentUser.data.name}</h2>
+        <h2 className="profile__title">Привет, {currentUser.data.name || ''}</h2>
         <label className="profile__label">
           Имя
             <input
