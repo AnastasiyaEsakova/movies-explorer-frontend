@@ -103,6 +103,7 @@ const handleMoviesLike = (movie) => {
         setSavedMovies((prevMovies) =>
           prevMovies.filter((m) => (m._id !== movie._id))
         );
+        ls.setItem("savedMovies", JSON.stringify(savedMovies))
       })
       .catch((err) => {
         setError(err)
@@ -119,6 +120,7 @@ const handleMoviesLike = (movie) => {
         const arr = savedMovies.map(i => i)
         arr.push(newMovie)
         setSavedMovies(arr)
+        ls.setItem("savedMovies", JSON.stringify(arr))
       })
       .catch((err) => {
         setError(err)
