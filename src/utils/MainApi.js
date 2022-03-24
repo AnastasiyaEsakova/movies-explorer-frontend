@@ -30,8 +30,7 @@ export class MainApi{
       trailerLink,
       nameRU,
       nameEN,
-      thumbnail,
-      movieId,
+      id,
     } = data;
     return fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
@@ -43,12 +42,12 @@ export class MainApi{
         duration,
         year,
         description,
-        image,
+        image: `https://api.nomoreparties.co${image.url}`,
         trailerLink,
         nameRU,
         nameEN,
-        thumbnail,
-        movieId,
+        thumbnail: `https://api.nomoreparties.co${image.formats.thumbnail.url}`,
+        movieId: String(id),
       })
     })
     .then((res) => this._handleReturnPromise(res));

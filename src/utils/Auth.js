@@ -39,18 +39,17 @@ export class Auth {
         return data;
       });
   };
-  // getContent = (token) => {
-  //   return fetch(`${this._baseUrl}/users/me`, {
-  //     method: "GET",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //     credentials: 'include',
-  //   })
-  //     .then((res) => this._handleReturnPromise(res))
-  //     .then((data) => data);
-  // };
+  signout = () => {
+    return fetch(`${this._baseUrl}/signout`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: 'include',
+    })
+      .then((res) => this._handleReturnPromise(res))
+      .then((data) => data);
+  };
 }
 const auth = new Auth("https://api.movies.esakova.nomoredomains.work");
 export default auth;

@@ -5,29 +5,29 @@ import './MoviesCardList.css'
 
 function MoviesCardList(props) {
   const [newMovies, setNewMovies] = React.useState([]);
-  // const [screenWidth, setScreenWidth] = React.useState(null);
-  const [moviesNumber, setMoviesNumber] = React.useState(null);
-  const [moviesNumberMore, setMoviesNumberMore] = React.useState(null);
-  const { handleLoad, checkScreenWidth, checkMoreLoad } = useFixLoadMovies();
+  const [counter, setCounter] = React.useState(null);
+  const { handleLoad, checkScreenWidth, moviesNumber, moviesNumberMore } = useFixLoadMovies();
 
   React.useEffect(() => {
     const handleResize = (e) => {
-      setMoviesNumber(checkScreenWidth(e.target.innerWidth))
+      setCounter(null)
+      checkScreenWidth(e.target.innerWidth)
     }
 
-    setMoviesNumber(checkScreenWidth(window.innerWidth))
-    setMoviesNumberMore(checkMoreLoad(moviesNumber))
+    checkScreenWidth(window.innerWidth)
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   React.useEffect(() => {
-    const list = handleLoad(props.list, moviesNumber);
+    if (!counter) setCounter(moviesNumber)
+    const list = handleLoad(props.list, counter);
     setNewMovies(list)
-  }, [props.list, moviesNumber]);
+   }, [props.list, moviesNumber, counter]);
+
 
   const handleLoadMoreMovies = () => {
-    setNewMovies(handleLoad(props.list, moviesNumber + moviesNumberMore))
+    setCounter(counter + moviesNumberMore)
   }
 
 
@@ -36,11 +36,11 @@ function MoviesCardList(props) {
       <div className="movie-card-list__container">
         { newMovies.map((movie) => {
           return (
-            <MoviesCard type={props.type} movie={movie} key={movie.id} handleMoviesLike={props.handleMoviesLike}/>
+            <MoviesCard type={props.type} movie={movie} key={movie.nameRU} handleMoviesLike={props.handleMoviesLike}/>
           )
         })}
       </div>
-      { props.type === 'movies' || props.list?.length === newMovies?.length ? <button className="movie-card-list__button" onClick={handleLoadMoreMovies}>Ещё</button> : null }
+      { (props.list.length === newMovies.length ) ?  null : <button className="movie-card-list__button" onClick={handleLoadMoreMovies}>Ещё</button>}
     </section>
 
   );

@@ -20,16 +20,17 @@ import './App.css'
 
 
 function App() {
+  const history = useHistory();
+  const { filterMovies, findSaveMovie } = useFixLoadMovies();
+
   const [currentUser, setCurrentUser] = React.useState({});
   const [movies, setMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [register, setRegister] = React.useState(false);
   const [error, setError] = React.useState('')
 
-  const history = useHistory();
-  const { filterMovies } = useFixLoadMovies();
+  const ls = window.localStorage
 
 //изменение профиля
 function handleUpdateUser(userInfo) {
@@ -38,131 +39,157 @@ function handleUpdateUser(userInfo) {
       setCurrentUser(res);
     })
     .catch((err) => {
-      console.log(err);
+      setError(err)
+        const timerId = setTimeout(() => {
+          setError(null)
+          clearTimeout(timerId);
+        }, 3000);
     });
 }
 
+function filterMoviesList (nameList) {
+  const mainList = JSON.parse(ls.getItem(`${nameList}`))
+  try {
+    const list = filterMovies(mainList, nameList);
+    findSaveMovie(list, savedMovies, currentUser.data._id);
+    if (nameList === 'movies') setMovies(list);
+    else setSavedMovies(list);
+    if (list.length === 0) setError('Ничего не найдено')
+  } catch (err) {
+    setError(err.messsage)
+  }
+
+}
 
 // запросы для фильмов
-function handleSearchMovies (text, isShort) {
+function handleSearchMovies (type) {
+  setError(null)
+  if (ls.getItem("movies")) {
+    filterMoviesList(type)
+    return
+  }
   setIsLoading(true)
   moviesApi.getMovies()
     .then((res) => {
-      const list = filterMovies(res, text, isShort);
-      setMovies(list);
+      ls.setItem("movies", JSON.stringify(res))
+      filterMoviesList(type)
     })
     .catch((err) => {
-      // setError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
-      setError(err.message)
+      setError(`Во время запроса произошла ошибка. Возможно, проблема с соединением или
+      сервер недоступен. Подождите немного и попробуйте ещё раз`)
     })
     .finally(() => {
       setIsLoading(false)
     })
 }
-// function loadMoreMovies () {
 
-// }
+function handleSearchSavedMovies (type) {
+  setError(null)
+  setIsLoading(true)
+  try {
+    filterMoviesList(type)
+  } catch (err) {
+    setError(err.message)
+  } finally {
+    setIsLoading(false)
+  }
+}
 
-function handleMoviesLike(movie) {
-  const isSaved = movie?.owner.some((i) => i === currentUser.data._id);
+const handleMoviesLike = (movie) => {
+  const isSaved = movie?.owner === currentUser.data._id;
   if (isSaved) {
     mainApi.deleteMovie(movie._id)
-      .then((res) => {
-        // setCards((prevCards) =>
-        //   prevCards.map((c) => (c._id === card._id ? newCard : c))
-        // );
-        console.log(res)
+      .then(() => {
+        movie.owner = null
+        setSavedMovies((prevMovies) =>
+          prevMovies.filter((m) => (m._id !== movie._id))
+        );
       })
       .catch((err) => {
         console.log(err);
       });
   } else {
     mainApi.saveMovie(movie)
-      .then((res) => {
-        setMovies((prevMovies) =>
-          prevMovies.map((m) => (m._id === movie._id ? newMovie : c))
-        );
+      .then((newMovie) => {
+        movie.owner = currentUser.data._id
+        movie._id = newMovie._id;
+        const arr = savedMovies.map(i => i)
+        arr.push(newMovie)
+        setSavedMovies(arr)
       })
       .catch((err) => {
         console.log(err);
       });
   }
 }
-
 
 // авторизация
   function handleRegisterSubmit(password, email, name) {
     auth.register(password, email, name)
       .then((res) => {
         if (res.data) {
-          handleInfoTooltipOpen(true);
-          history.push("/sign-in");
+          history.push("/signin");
         }
       })
       .catch((err) => {
-        handleInfoTooltipOpen(false);
-        console.log(err.message);
+        setError(err)
+        const timerId = setTimeout(() => {
+          setError(null)
+          clearTimeout(timerId);
+        }, 3000);
       });
   }
+
   function handleLoginSubmit(password, email) {
     auth
       .authorize(password, email)
       .then((res) => {
         if (res.token) {
           setLoggedIn(true)
-          history.push("/");
+          history.push("/movies");
         }
       })
       .catch((err) => {
-        handleInfoTooltipOpen(false);
-        console.log(err);
+        setError(err)
+        const timerId = setTimeout(() => {
+          setError(null)
+          clearTimeout(timerId);
+        }, 3000);
       });
   }
 
   function signOut() {
-    history.push("/signin");
-    setLoggedIn(false);
-    localStorage.removeItem("token");
+    auth.signout()
+      .then(() => {
+        history.push("/signin");
+        setLoggedIn(false);
+        localStorage.clear();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
-
-  React.useEffect(() => {
-    function handleTokenCheck() {
-      if (localStorage.getItem("token")) {
-        mainApi.getProfileInfo()
-          .then((res) => {
-            if (res) {
-              setLoggedIn(true);
-              // setCurrentUser(res);
-              history.push("/");
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    }
-
-    handleTokenCheck();
-    getContent();
-  }, [loggedIn, history]);
-
 
 // получение данных при первом открытии страницы
 function getContent () {
-  Promise.all([mainApi.getSavedMovies(), mainApi.getProfileInfo()])
+  if (localStorage.getItem("token")) {
+    setLoggedIn(true);
+    history.push("/movies");
+    Promise.all([mainApi.getSavedMovies(), mainApi.getProfileInfo()])
     .then((res) => {
-      // setMovies(res[0]);
       setSavedMovies(res[0]);
       setCurrentUser(res[1]);
+      ls.setItem("savedMovies", JSON.stringify(res[0]))
     })
     .catch((err) => {
       console.log(err);
     });
+  }
 }
 
 React.useEffect(() => {
   getContent();
-}, []);
+}, [loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -185,35 +212,28 @@ React.useEffect(() => {
             loggedIn={loggedIn}
             movies={savedMovies}
             handleMoviesLike={handleMoviesLike}
+            error={error}
+            isLoading={isLoading}
+            handleSearchMovies={handleSearchSavedMovies}
             component={SavedMovies}
           >
             <Footer />
           </ProtectedRoute>
-          {/* <Route path="/movies">
-            <Movies movies={movies} handleMoviesLike={handleMoviesLike}/>
-            <Footer />
-          </Route> */}
-          {/* <Route path="/saved-movies">
-            <SavedMovies movies={savedMovies} />
-            <Footer />
-          </Route> */}
-          <Route path="/profile">
-            <Profile handleUpdateUser={handleUpdateUser} signOut={signOut} loggedIn={loggedIn}/>
-          </Route>
+          <ProtectedRoute
+           path="/profile"
+           handleUpdateUser={handleUpdateUser}
+           signOut={signOut}
+           loggedIn={loggedIn}
+           error={error}
+           component={Profile}
+          />
           <Route path="/signin">
-            <Login handleLoginSubmit={handleLoginSubmit} />
+            <Login handleLoginSubmit={handleLoginSubmit}  error={error}/>
           </Route>
           <Route path="/signup">
-            <Register handleRegisterSubmit={handleRegisterSubmit} />
+            <Register handleRegisterSubmit={handleRegisterSubmit}  error={error}/>
           </Route>
-          {/* <ProtectedRoute
-            path="/"
-            component={Main}
-            loggedIn={loggedIn}
-          >
-            <Footer />
-          </ProtectedRoute> */}
-          <Route path="/">
+          <Route exact path="/">
             <Main loggedIn={loggedIn} />
             <Footer />
           </Route>
@@ -223,7 +243,6 @@ React.useEffect(() => {
         </Switch>
       </div>
     </CurrentUserContext.Provider>
-
   );
 }
 

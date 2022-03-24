@@ -6,15 +6,14 @@ import './Navigation.css'
 function Navigation(props) {
   const [isOpenMenu, setisOpenMenu] = React.useState(false);
 
-  const handleOpenMenu = () => {
-    setisOpenMenu(!isOpenMenu)
-  }
-
   const moviesClass = `navigation__link navigation__link_type_movies
   ${props.type === 'movies' ? 'navigation__link_type_checked' : ''}`
   const sevedMoviesClass = `navigation__link navigation__link_type_movies
   ${props.type === 'savedMovies' ? 'navigation__link_type_checked' : ''}`
 
+  const handleOpenMenu = () => {
+    setisOpenMenu(!isOpenMenu)
+  }
 
   return (
     <div className="navigation">

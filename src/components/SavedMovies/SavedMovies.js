@@ -7,15 +7,15 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import './SavedMovies.css';
 
 function SavedMovies(props) {
-  const isLoading = false
 
   return (
-    <div className="movies">
-     <Header>
-       <Navigation type="savedMovies" loggedIn={props.loggedIn}/>
-     </Header>
-     <SearchForm />
-     {isLoading ? <Preloader /> : <MoviesCardList type="savedMovies" list={props.movies} /> }
+    <div className="saved-movies">
+      <Header>
+        <Navigation type="savedMovies" loggedIn={props.loggedIn}/>
+      </Header>
+      <SearchForm type="savedMovies" handleSearchMovies={props.handleSearchMovies}/>
+      {props.error ? <p className="saved-movies__text">{props.error}</p> : null}
+      {props.isLoading ? <Preloader /> : <MoviesCardList type="savedMovies" list={props.movies}  handleMoviesLike={props.handleMoviesLike} /> }
     </div>
 
   );

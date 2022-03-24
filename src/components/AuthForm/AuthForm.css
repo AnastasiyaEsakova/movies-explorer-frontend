@@ -85,6 +85,17 @@
   align-items: center;
 }
 
+.auth__button-error {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: #EE3465;
+  text-align: center;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
 .auth__button-info {
   display: flex;
   justify-content: center;

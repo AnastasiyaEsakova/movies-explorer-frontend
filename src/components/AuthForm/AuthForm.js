@@ -6,9 +6,10 @@ function AuthForm(props) {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const { handleChange, errors, isValid, resetForm, setIsValid} = useFormAndValidation()
+  const { handleChange, errors, isValid, resetForm, setIsValid} = useFormAndValidation();
 
   React.useEffect(() => {
+    resetForm();
     setIsValid(true);
   }, []);
 
@@ -27,6 +28,7 @@ function AuthForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isValid) return
     if (props.title.length === 3) {
       if (!name && !password && !email) return
       props.submit(password, email, name)
@@ -136,7 +138,8 @@ function AuthForm(props) {
         </>
       }
         <div className="auth__button-container">
-          <button className="auth__button">{props.buttonText}</button>
+          <p className="auth__button-error">{props.error}</p>
+          <button className={`auth__button ${!isValid ? 'auth__button_disable' : '' }`}>{props.buttonText}</button>
           {props.children}
         </div>
       </form>

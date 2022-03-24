@@ -13,12 +13,9 @@ export class MoviesApi{
     getMovies(){
       return fetch(`${this._baseUrl}`, {
       headers: this._headers,
-      // credentials: 'include',
     })
     .then((res) => this._handleReturnPromise(res));
     }
-
-
   }
 
   const moviesApi = new MoviesApi({
