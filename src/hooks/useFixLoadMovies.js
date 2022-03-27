@@ -1,21 +1,21 @@
 import React from 'react';
 
 export function useFixLoadMovies() {
-  const [moviesNumber, setMoviesNumber] = React.useState(null);
-  const [moviesNumberMore, setMoviesNumberMore] = React.useState(null);
+  const [numberOfMovies, setNumberOfMovies] = React.useState(null);
+  const [numberOfAddMovies, setNumberOfAddMovies] = React.useState(null);
 
   function checkScreenWidth (num) {
     if (num > 1280) {
-      setMoviesNumber(12)
-      setMoviesNumberMore(3)
+      setNumberOfMovies(12)
+      setNumberOfAddMovies(3)
     }
     else if ( num < 1280 && num > 500) {
-      setMoviesNumber(8)
-      setMoviesNumberMore(2)
+      setNumberOfMovies(8)
+      setNumberOfAddMovies(2)
     }
     else {
-      setMoviesNumber(5)
-      setMoviesNumberMore(5)
+      setNumberOfMovies(5)
+      setNumberOfAddMovies(5)
     }
   }
 
@@ -62,5 +62,5 @@ export function useFixLoadMovies() {
   }
 
 
-  return { handleLoad, filterMovies, checkScreenWidth, findSaveMovie, moviesNumber, moviesNumberMore };
+  return { handleLoad, filterMovies, checkScreenWidth, findSaveMovie, numberOfMovies, numberOfAddMovies };
 }

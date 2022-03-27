@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useRouteMatch, Redirect  } from "react-router-dom";
 
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import mainApi from "../../utils/MainApi";
@@ -22,7 +22,8 @@ import './App.css'
 function App() {
   const history = useHistory();
   const { filterMovies, findSaveMovie } = useFixLoadMovies();
-  const ls = window.localStorage
+  const ls = window.localStorage;
+  const { path } = useRouteMatch();
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [movies, setMovies] = React.useState([]);
@@ -30,7 +31,6 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [error, setError] = React.useState('')
-
 
 //изменение профиля
 function handleUpdateUser(userInfo) {
@@ -43,7 +43,7 @@ function handleUpdateUser(userInfo) {
         const timerId = setTimeout(() => {
           setError(null)
           clearTimeout(timerId);
-        }, 3000);
+        }, 5000);
     });
 }
 
@@ -100,17 +100,22 @@ const handleMoviesLike = (movie) => {
     mainApi.deleteMovie(movie._id)
       .then(() => {
         movie.owner = null
-        setSavedMovies((prevMovies) =>
-          prevMovies.filter((m) => (m._id !== movie._id))
-        );
-        ls.setItem("savedMovies", JSON.stringify(savedMovies))
+        const newSavedMovies =  savedMovies.filter((m) => (m._id !== movie._id))
+        const newMovies = movies.filter(m => {
+          if (m.id === movie.movieId)  m.owner = null
+          return m
+        })
+        setSavedMovies(newSavedMovies);
+        ls.setItem("savedMovies", JSON.stringify(newSavedMovies))
+        setMovies(newMovies)
+        ls.setItem("resultSearch-movies", JSON.stringify(newMovies))
       })
       .catch((err) => {
         setError(err)
         const timerId = setTimeout(() => {
           setError(null)
           clearTimeout(timerId);
-        }, 3000);
+        }, 5000);
       });
   } else {
     mainApi.saveMovie(movie)
@@ -127,7 +132,7 @@ const handleMoviesLike = (movie) => {
         const timerId = setTimeout(() => {
           setError(null)
           clearTimeout(timerId);
-        }, 3000);
+        }, 5000);
       });
   }
 }
@@ -136,24 +141,7 @@ const handleMoviesLike = (movie) => {
   function handleRegisterSubmit(password, email, name) {
     auth.register(password, email, name)
       .then((res) => {
-        if (res.data) {
-          history.push("/signin");
-        }
-      })
-      .catch((err) => {
-        setError(err)
-        const timerId = setTimeout(() => {
-          setError(null)
-          clearTimeout(timerId);
-        }, 3000);
-      });
-  }
-
-  function handleLoginSubmit(password, email) {
-    auth
-      .authorize(password, email)
-      .then((res) => {
-        if (res.token) {
+        if (res.data.token) {
           setLoggedIn(true)
           history.push("/movies");
         }
@@ -163,14 +151,32 @@ const handleMoviesLike = (movie) => {
         const timerId = setTimeout(() => {
           setError(null)
           clearTimeout(timerId);
-        }, 3000);
+        }, 5000);
+      });
+  }
+
+  function handleLoginSubmit(password, email) {
+    auth
+      .authorize(password, email)
+      .then((res) => {
+        if (res.data.token) {
+          setLoggedIn(true)
+          history.push("/movies");
+        }
+      })
+      .catch((err) => {
+        setError(err)
+        const timerId = setTimeout(() => {
+          setError(null)
+          clearTimeout(timerId);
+        }, 5000);
       });
   }
 
   function signOut() {
     auth.signout()
       .then(() => {
-        history.push("/signin");
+        history.push("/");
         setLoggedIn(false);
         localStorage.clear();
       })
@@ -179,31 +185,32 @@ const handleMoviesLike = (movie) => {
         const timerId = setTimeout(() => {
           setError(null)
           clearTimeout(timerId);
-        }, 3000);
+        }, 5000);
       })
   }
-
 
 // получение данных при первом открытии страницы
 function getContent () {
   setMovies([])
   if (localStorage.getItem("token")) {
     setLoggedIn(true);
-    history.push("/movies");
     Promise.all([mainApi.getSavedMovies(), mainApi.getProfileInfo()])
     .then((res) => {
       setCurrentUser(res[1]);
       ls.setItem("savedMovies", JSON.stringify(res[0]))
       setSavedMovies(res[0]);
       if (ls.getItem("resultSearch-savedMovies")) setSavedMovies(JSON.parse(ls.getItem("resultSearch-savedMovies")));
-      if (ls.getItem("resultSearch-movies"))  setMovies( JSON.parse(ls.getItem("resultSearch-movies")))
+      if (ls.getItem("resultSearch-movies")) {
+        const list = findSaveMovie(JSON.parse(ls.getItem("resultSearch-movies")), res[0], res[1].data._id);
+        setMovies(list)
+      }
     })
     .catch((err) => {
       setError(err)
         const timerId = setTimeout(() => {
           setError(null)
           clearTimeout(timerId);
-        }, 3000);
+        }, 5000);
     });
   }
 }
@@ -217,7 +224,7 @@ React.useEffect(() => {
       <div className="page">
         <Switch>
           <ProtectedRoute
-            path="/movies"
+            exact path="/movies"
             loggedIn={loggedIn}
             movies={movies}
             handleMoviesLike={handleMoviesLike}
@@ -225,11 +232,12 @@ React.useEffect(() => {
             isLoading={isLoading}
             handleSearchMovies={handleSearchMovies}
             component={Movies}
+            location={path}
           >
             <Footer />
           </ProtectedRoute>
           <ProtectedRoute
-            path="/saved-movies"
+            exact path="/saved-movies"
             loggedIn={loggedIn}
             movies={savedMovies}
             handleMoviesLike={handleMoviesLike}
@@ -237,22 +245,24 @@ React.useEffect(() => {
             isLoading={isLoading}
             handleSearchMovies={handleSearchSavedMovies}
             component={SavedMovies}
+            location={path}
           >
             <Footer />
           </ProtectedRoute>
           <ProtectedRoute
-           path="/profile"
+           exact path="/profile"
            handleUpdateUser={handleUpdateUser}
            signOut={signOut}
            loggedIn={loggedIn}
            error={error}
            component={Profile}
+           location={path}
           />
-          <Route path="/signin">
-            <Login handleLoginSubmit={handleLoginSubmit}  error={error}/>
+          <Route exact path="/signin">
+            {!loggedIn ? <Login handleLoginSubmit={handleLoginSubmit}  error={error}/> : <Redirect to="/movies" />}
           </Route>
-          <Route path="/signup">
-            <Register handleRegisterSubmit={handleRegisterSubmit}  error={error}/>
+          <Route exact path="/signup">
+           {!loggedIn ? <Register handleRegisterSubmit={handleRegisterSubmit}  error={error}/> : <Redirect to="/movies" />}
           </Route>
           <Route exact path="/">
             <Main loggedIn={loggedIn} />

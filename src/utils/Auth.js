@@ -9,7 +9,7 @@ export class Auth {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Произошла ошибка: ${res.status} ${res.statusText} :(`);
+      return Promise.reject(`Произошла ошибка: ${res.status} ${res.statusText} :(`)
     };
   }
   register = (password, email, name) => {
@@ -21,6 +21,9 @@ export class Auth {
     })
       .then((res) => this._handleReturnPromise(res))
       .then((res) => {
+        if (res.data.token) {
+          localStorage.setItem("token", res.data.token);
+        }
         return res;
       });
   }
@@ -32,11 +35,11 @@ export class Auth {
       body: JSON.stringify({ password, email }),
     })
       .then((res) => this._handleReturnPromise(res))
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem("token", data.token);
+      .then((res) => {
+        if (res.data.token) {
+          localStorage.setItem("token", res.data.token);
         }
-        return data;
+        return res;
       });
   };
   signout = () => {

@@ -6,12 +6,20 @@ function AuthForm(props) {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [isSubmit, setIsSubmit] = React.useState(false);
   const { handleChange, errors, isValid, resetForm, setIsValid} = useFormAndValidation();
 
   React.useEffect(() => {
+    setIsSubmit(false)
     resetForm();
     setIsValid(true);
   }, []);
+
+  React.useEffect(() => {
+    setIsSubmit(false)
+    resetForm();
+    setIsValid(true);
+  }, [props.error]);
 
   const handleChangeName = (e) => {
     setName(e.target.value);
@@ -29,6 +37,7 @@ function AuthForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!isValid) return
+    setIsSubmit(true)
     if (props.title.length === 3) {
       if (!name && !password && !email) return
       props.submit(password, email, name)
@@ -58,6 +67,7 @@ function AuthForm(props) {
             value={name || ""}
             minLength="2"
             required
+            disabled={isSubmit}
           />
           <span
             className={`auth__error ${ errors.name ? "auth__error_visible" : "" }`}
@@ -75,6 +85,7 @@ function AuthForm(props) {
             value={email || ""}
             minLength="2"
             required
+            disabled={isSubmit}
           />
           <span
             className={`auth__error ${ errors.email ? "auth__error_visible" : "" }`}
@@ -92,6 +103,7 @@ function AuthForm(props) {
             value={password || ""}
             minLength="7"
             required
+            disabled={isSubmit}
           />
           <span
             className={`auth__error ${ errors.password ? "auth__error_visible" : "" }`}
@@ -111,6 +123,7 @@ function AuthForm(props) {
             value={email || ""}
             minLength="2"
             required
+            disabled={isSubmit}
           />
           <span
             className={`auth__error ${ errors.email ? "auth__error_visible" : "" }`}
@@ -128,6 +141,7 @@ function AuthForm(props) {
             value={password || ""}
             minLength="7"
             required
+            disabled={isSubmit}
           />
           <span
             className={`auth__error ${ errors.password ? "auth__error_visible" : "" }`}

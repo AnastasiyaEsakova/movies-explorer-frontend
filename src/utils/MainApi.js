@@ -6,7 +6,7 @@ export class MainApi{
       if(res.ok){
         return res.json();
       }
-      return Promise.reject(`Произошла ошибка: ${res.status} :(`);
+      return Promise.reject(`Произошла ошибка: ${res.status} ${res.statusText} :(`);
     });
   }
 
@@ -16,7 +16,7 @@ export class MainApi{
     headers: this._headers,
     credentials: 'include',
   })
-  .then((res) => this._handleReturnPromise(res));
+  .then((res) => this._handleReturnPromise(res))
   }
 
   saveMovie(data){
