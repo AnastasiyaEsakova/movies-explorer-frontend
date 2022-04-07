@@ -6,7 +6,6 @@ function BurgerMenu(props) {
 
   return (
     <div className="burger-menu">
-      {/* <div className="burger-menu__overlay"></div> */}
       <div className={`burger-menu__box ${props.isOpenMenu ? 'burger-menu__box_active' : ''}`} onClick={props.handleOpenMenu}>
         <span className={`burger-menu__item ${props.isOpenMenu ? 'burger-menu__item_active' : ''}`}></span>
       </div>

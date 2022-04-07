@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import AuthForm from "../AuthForm/AuthForm";
 import './Register.css'
 
-function Register() {
+function Register(props) {
   return (
     <section className="register">
       <div className="register__container">
@@ -11,7 +11,7 @@ function Register() {
           <div className="register__link"></div>
         </Link>
         <h1 className="register__title">Добро пожаловать!</h1>
-        <AuthForm title={['E-mail', 'Пароль', 'Имя']} buttonText="Зарегистрироваться">
+        <AuthForm title={['E-mail', 'Пароль', 'Имя']} buttonText="Зарегистрироваться" submit={props.handleRegisterSubmit} error={props.error}>
           <div className="auth__button-info">
             <p className="auth__text">Уже зарегистрированы?</p>
             <Link to="/signin" className="auth__link">

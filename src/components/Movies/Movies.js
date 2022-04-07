@@ -4,18 +4,26 @@ import Navigation from "../Navigation/Navigation";
 import SearchForm from "../SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import { config } from '../../utils/constants'
+import './Movies.css'
 
-function Movies() {
-  const isLoading = false
+function Movies(props) {
+  const [isShow, setIsShow] = React.useState(false)
+
+  React.useEffect(() => {
+    if (localStorage.getItem("resultSearch-movies")) setIsShow(true)
+  }, [props.movies])
 
   return (
     <div className="movies">
      <Header>
-       <Navigation type="movies" isMovieScreen/>
+       <Navigation type="movies" loggedIn={props.loggedIn}/>
      </Header>
-     <SearchForm />
-     {isLoading ? <Preloader /> :  <MoviesCardList list={config} type="movies"/> }
+     <SearchForm type="movies" handleSearchMovies={props.handleSearchMovies}/>
+    {props.error ?
+    <p className="saved-movies__text">{props.error}</p> :
+    props.movies.length === 0 && isShow?  <p className="saved-movies__text">Ничего не найдено</p> : null
+    }
+    {props.isLoading ? <Preloader /> : <MoviesCardList list={props.movies} type="movies" handleMoviesLike={props.handleMoviesLike}/> }
     </div>
 
   );
