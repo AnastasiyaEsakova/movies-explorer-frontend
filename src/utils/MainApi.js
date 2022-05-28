@@ -6,7 +6,11 @@ export class MainApi{
       if(res.ok){
         return res.json();
       }
-      return Promise.reject(`Произошла ошибка: ${res.status} ${res.statusText} :(`);
+      return res.json()
+      .then(data => {
+        const message = data.message || res.statusText
+        return Promise.reject(message, ':(');
+      })
     });
   }
 
